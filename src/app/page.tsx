@@ -1,4 +1,3 @@
-// src/app/page.tsx
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -15,7 +14,6 @@ export default function HomePage() {
       />
       <p>This is your homepage with optimized image loading.</p>
 
-      {/* ✅ Correct internal navigation */}
       <p>
         <Link href="/notes/">Go to Notes</Link>
       </p>

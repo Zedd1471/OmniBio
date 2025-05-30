@@ -8,7 +8,7 @@ import {
   startAfter,
   serverTimestamp,
   QueryDocumentSnapshot,
-  DocumentData
+  DocumentData,
 } from 'firebase/firestore';
 import { db } from '@/firebase';
 
@@ -50,13 +50,10 @@ export async function getQuestions(
   const querySnapshot = await getDocs(q);
   const questions = querySnapshot.docs.map(doc => ({
     id: doc.id,
-    ...doc.data()
+    ...doc.data(),
   }));
 
-  const lastVisible =
-    querySnapshot.docs.length > 0
-      ? querySnapshot.docs[querySnapshot.docs.length - 1]
-      : null;
+  const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1] || null;
 
   return { questions, lastVisible };
 }
@@ -77,10 +74,7 @@ export async function addAnswer(
     timestamp: serverTimestamp(),
   };
 
-  const docRef = await addDoc(
-    collection(db, `questions/${questionId}/answers`),
-    answer
-  );
+  const docRef = await addDoc(collection(db, `questions/${questionId}/answers`), answer);
   return docRef.id;
 }
 
@@ -94,6 +88,6 @@ export async function getAnswers(questionId: string) {
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map(doc => ({
     id: doc.id,
-    ...doc.data()
+    ...doc.data(),
   }));
 }
