@@ -1,4 +1,5 @@
 "use client";
+import FirebaseAuthDemo from '../../components/FirebaseAuthDemo';
 
 import React from "react";
 

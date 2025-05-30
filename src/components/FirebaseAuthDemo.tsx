@@ -1,46 +1,58 @@
-import React, { useState, useEffect } from "react";
-import { auth } from "../lib/firebase";  // Adjust the relative path if needed
-import { signInAnonymously, onAuthStateChanged, signOut } from "firebase/auth";
-import { User } from "firebase/auth"; // make sure this import is at the top
+'use client';
+
+import { useEffect, useState } from 'react';
+import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, User } from 'firebase/auth';
+import { app } from '../firebase/firebaseConfig'; // adjust if your config is elsewhere
+
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
 export default function FirebaseAuthDemo() {
-const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
     });
-    return unsubscribe; 
+
+    return () => unsubscribe();
   }, []);
 
-  const handleLogin = () => {
-    signInAnonymously(auth).catch((error) => {
-      console.error("Login error:", error);
-    });
+  const handleSignIn = async () => {
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error('Sign-in error:', error);
+    }
   };
 
-  const handleLogout = () => {
-    signOut(auth).catch((error) => {
-      console.error("Logout error:", error);
-    });
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error('Sign-out error:', error);
+    }
   };
-
-  if (loading) return <p>Loading...</p>;
 
   return (
-    <div>
+    <div className="p-4 rounded shadow border max-w-md mx-auto text-center">
       {user ? (
         <>
-          <p>Logged in anonymously as: {user.uid}</p>
-          <button onClick={handleLogout}>Logout</button>
+          <p className="mb-2">Welcome, {user.displayName}</p>
+          <button
+            onClick={handleSignOut}
+            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+          >
+            Sign Out
+          </button>
         </>
       ) : (
-        <>
-          <p>Not logged in</p>
-          <button onClick={handleLogin}>Login Anonymously</button>
-        </>
+        <button
+          onClick={handleSignIn}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+        >
+          Sign in with Google
+        </button>
       )}
     </div>
   );
