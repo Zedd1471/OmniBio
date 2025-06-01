@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quiz Result</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Your Score</h1>
+  </header>
+  <main>
+    <div id="scoreDisplay"></div>
+    <a href="quiz.html">← Back to Quiz</a>
+  </main>
+
+  <script>
+    const score = sessionStorage.getItem('score');
+    document.getElementById('scoreDisplay').innerHTML = `<h2>You scored ${score}/5!</h2>`;
+  </script>
+</body>
+</html>

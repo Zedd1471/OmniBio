@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Take Quiz - OmniBio</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>OmniBio Weekly Quiz</h1>
+  </header>
+  <main>
+    <section id="start-screen">
+      <label for="studentId">Enter your Student ID:</label>
+      <input type="text" id="studentId" placeholder="e.g., BTH/1234" />
+      <button onclick="startQuiz()">Start Quiz</button>
+    </section>
+
+    <section id="quiz-container" style="display:none;">
+      <div id="timer">⏳ 2:30</div>
+      <form id="quizForm"></form>
+      <button onclick="submitQuiz()">Submit</button>
+    </section>
+  </main>
+
+  <script src="js/quiz.js"></script>
+</body>
+</html>
